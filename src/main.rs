@@ -28,4 +28,5 @@ fn sphere_demo() {
 
 fn main() {
     sphere_demo();
+    map_elites_rust::test();
 }
