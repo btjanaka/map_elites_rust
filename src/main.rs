@@ -7,7 +7,7 @@ use rand::SeedableRng;
 use rand_pcg::Pcg64Mcg;
 
 #[derive(Parser)]
-#[command(author, version, about, long_about = None)] // Read from `Cargo.toml`
+#[command(author, version, about, long_about = None)]
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
