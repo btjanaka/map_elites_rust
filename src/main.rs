@@ -1,4 +1,4 @@
-use map_elites_rust::benchmarks::{sphere, sphere_single};
+use map_elites_rust::benchmarks;
 use ndarray::prelude::*;
 use ndarray_rand::rand_distr::StandardNormal;
 use ndarray_rand::RandomExt;
@@ -12,22 +12,24 @@ fn sphere_demo() {
     println!("input[0]: {}", input.slice(s![0, ..]));
     println!(
         "Sphere of input[0]: {}",
-        sphere_single(input.index_axis(Axis(0), 0))
+        benchmarks::sphere_single(input.index_axis(Axis(0), 0))
     );
 
     for (i, row) in input.outer_iter().enumerate() {
-        println!("-> Sphere of row {}: {}", i, sphere_single(row));
+        println!("-> Sphere of row {}: {}", i, benchmarks::sphere_single(row));
     }
 
-    println!("In batch: {}", sphere(input.view()));
+    println!("In batch: {}", benchmarks::sphere(input.view()));
 
     let mut rng = Pcg64Mcg::seed_from_u64(42);
     let random_input: Array2<f64> = Array::random_using((2, 10), StandardNormal, &mut rng);
     println!("Random inputs: {}", random_input);
-    println!("With random inputs: {}", sphere(random_input.view()));
+    println!(
+        "With random inputs: {}",
+        benchmarks::sphere(random_input.view())
+    );
 }
 
 fn main() {
     sphere_demo();
-    map_elites_rust::test();
 }
