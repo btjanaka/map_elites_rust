@@ -1,16 +1,7 @@
+use map_elites_rust::benchmarks::{sphere, sphere_single};
 use ndarray::prelude::*;
 use ndarray_rand::rand_distr::StandardNormal;
 use ndarray_rand::RandomExt;
-
-/// Computes the sphere function for a single 1D solution.
-fn sphere_single(arr: ArrayView1<f64>) -> f64 {
-    (&arr * &arr).sum()
-}
-
-/// Computes the sphere function for a batch of 1D solutions.
-fn sphere(arr: ArrayView2<f64>) -> Array1<f64> {
-    (&arr * &arr).sum_axis(Axis(1))
-}
 
 fn sphere_demo() {
     let input: Array2<f64> = arr2(&[[1., 1., 1., 1., 1.], [1., 2., 3., 4., 5.]]);
