@@ -2,6 +2,8 @@ use map_elites_rust::benchmarks::{sphere, sphere_single};
 use ndarray::prelude::*;
 use ndarray_rand::rand_distr::StandardNormal;
 use ndarray_rand::RandomExt;
+use rand::SeedableRng;
+use rand_pcg::Pcg64Mcg;
 
 fn sphere_demo() {
     let input: Array2<f64> = arr2(&[[1., 1., 1., 1., 1.], [1., 2., 3., 4., 5.]]);
@@ -19,7 +21,8 @@ fn sphere_demo() {
 
     println!("In batch: {}", sphere(input.view()));
 
-    let random_input: Array2<f64> = Array::random((2, 10), StandardNormal);
+    let mut rng = Pcg64Mcg::seed_from_u64(42);
+    let random_input: Array2<f64> = Array::random_using((2, 10), StandardNormal, &mut rng);
     println!("Random inputs: {}", random_input);
     println!("With random inputs: {}", sphere(random_input.view()));
 }
