@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{Args, Parser, Subcommand};
 use map_elites_rust::benchmarks;
 use ndarray::prelude::*;
 use ndarray_rand::rand_distr::StandardNormal;
@@ -6,11 +6,15 @@ use ndarray_rand::RandomExt;
 use rand::SeedableRng;
 use rand_pcg::Pcg64Mcg;
 
+//
+// Command line arguments
+//
+
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Cli {
     #[command(subcommand)]
-    command: Option<Commands>,
+    command: Commands,
 }
 
 #[derive(Subcommand)]
@@ -21,7 +25,25 @@ enum Commands {
         #[arg(short, long, default_value_t = 10)]
         dim: usize,
     },
+
+    /// MAP-Elites on the Sphere function.
+    MapElites(MapElitesConfig),
 }
+
+#[derive(Debug, Args)]
+struct MapElitesConfig {
+    /// Dimensionality of the 1D solutions.
+    #[arg(short, long, default_value_t = 10)]
+    dim: usize,
+
+    /// Number of solutions to evaluate per iteration.
+    #[arg(short, long, default_value_t = 100)]
+    batch_size: usize,
+}
+
+//
+// Functionality
+//
 
 fn sphere_demo(dim: usize) {
     let input: Array2<f64> = arr2(&[[1., 1., 1., 1., 1.], [1., 2., 3., 4., 5.]]);
@@ -48,13 +70,15 @@ fn sphere_demo(dim: usize) {
     );
 }
 
+fn map_elites(config: &MapElitesConfig) {}
+
 fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Some(Commands::Sphere { dim }) => {
+        Commands::Sphere { dim } => {
             sphere_demo(*dim);
         }
-        None => {}
+        Commands::MapElites(config) => map_elites(config),
     }
 }
