@@ -9,6 +9,7 @@ edition = "2021"
 clap = { version = "4.3.23", features = ["derive"] }
 indicatif = "0.17.6"
 ndarray = "0.15.6"
+ndarray-npy = "0.8.1"
 ndarray-rand = "0.14.0"
 rand = "0.8.5"
 rand_pcg = "0.3.1"

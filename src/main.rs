@@ -2,11 +2,14 @@ use clap::{Args, Parser, Subcommand};
 use indicatif::ProgressIterator;
 use map_elites_rust::{benchmarks, utils};
 use ndarray::prelude::*;
+use ndarray_npy::WriteNpyExt;
 use ndarray_rand::rand_distr::StandardNormal;
 use ndarray_rand::RandomExt;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;
 use rand_pcg::Pcg64Mcg;
+use std::fs::File;
+use std::io::BufWriter;
 
 //
 // Command line arguments
@@ -188,6 +191,16 @@ fn map_elites(config: &MapElitesConfig) {
         "Coverage: {:.3}",
         occupied_list.len() as f64 / num_cells as f64
     );
+
+    println!("Writing results!");
+    let obj_writer = BufWriter::new(File::create("objectives.npy").unwrap());
+    objective_arr.write_npy(obj_writer).unwrap();
+    let meas_writer = BufWriter::new(File::create("measures.npy").unwrap());
+    measure_arr.write_npy(meas_writer).unwrap();
+    let sol_writer = BufWriter::new(File::create("solutions.npy").unwrap());
+    solution_arr.write_npy(sol_writer).unwrap();
+    let occ_writer = BufWriter::new(File::create("occupied.npy").unwrap());
+    occupied_arr.write_npy(occ_writer).unwrap();
 }
 
 fn main() {
