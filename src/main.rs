@@ -182,6 +182,12 @@ fn map_elites(config: &MapElitesConfig) {
             }
         }
     }
+
+    let num_cells = config.cells * config.cells;
+    println!(
+        "Coverage: {:.3}",
+        occupied_list.len() as f64 / num_cells as f64
+    );
 }
 
 fn main() {
