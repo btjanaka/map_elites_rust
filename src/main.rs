@@ -10,6 +10,7 @@ use rand::SeedableRng;
 use rand_pcg::Pcg64Mcg;
 use std::fs::File;
 use std::io::BufWriter;
+use std::time::Instant;
 
 //
 // Command line arguments
@@ -119,6 +120,7 @@ fn map_elites(config: &MapElitesConfig) {
     ];
 
     println!("Running MAP-Elites");
+    let start_time = Instant::now();
 
     // MAP-Elites iterations.
     for itr in (1..(config.itrs + 1)).progress() {
@@ -186,11 +188,14 @@ fn map_elites(config: &MapElitesConfig) {
         }
     }
 
+    // Metrics.
+    let elapsed_time = start_time.elapsed();
     let num_cells = config.cells * config.cells;
     println!(
         "Coverage: {:.3}",
         occupied_list.len() as f64 / num_cells as f64
     );
+    println!("Elapsed time: {:.3}s", elapsed_time.as_secs_f64());
 
     println!("Writing results!");
     let obj_writer = BufWriter::new(File::create("objectives.npy").unwrap());
