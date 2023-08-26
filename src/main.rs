@@ -1,4 +1,5 @@
 use clap::{Args, Parser, Subcommand};
+use indicatif::ProgressIterator;
 use map_elites_rust::{benchmarks, utils};
 use ndarray::prelude::*;
 use ndarray_rand::rand_distr::StandardNormal;
@@ -114,8 +115,14 @@ fn map_elites(config: &MapElitesConfig) {
         config.grid_max - config.grid_min,
     ];
 
-    for itr in 1..=config.itrs {
-        // Get original solutions.
+    println!("Running MAP-Elites");
+
+    // MAP-Elites iterations.
+    for itr in (1..(config.itrs + 1)).progress() {
+        // Must use config.itrs + 1 instead of =config.itrs due to indicatif not supporting
+        // =config.itrs.
+
+        // Collect parent solutions.
         let mut solutions = if itr == 1 {
             // Start with all zeros on iteration 1.
             Array2::<f64>::zeros((config.batch_size, config.dim))
