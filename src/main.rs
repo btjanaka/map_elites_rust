@@ -162,7 +162,7 @@ fn map_elites(config: &MapElitesConfig) {
             let mut archive_idx = [0, 0];
             for i in [0, 1] {
                 archive_idx[i] = utils::clip(
-                    ((config.dim as f64 * (meas[i] - config.grid_min + config.epsilon))
+                    ((config.cells as f64 * (meas[i] - config.grid_min + config.epsilon))
                         / interval_size[i]) as usize,
                     0,
                     config.cells - 1,
