@@ -1,5 +1,5 @@
 use clap::{Args, Parser, Subcommand};
-use indicatif::ProgressIterator;
+use indicatif::{ProgressIterator, ProgressStyle};
 use map_elites_rust::{benchmarks, utils};
 use ndarray::prelude::*;
 use ndarray_npy::WriteNpyExt;
@@ -123,7 +123,11 @@ fn map_elites(config: &MapElitesConfig) {
     let start_time = Instant::now();
 
     // MAP-Elites iterations.
-    for itr in (1..(config.itrs + 1)).progress() {
+    let style = ProgressStyle::with_template(
+        "{percent}% {wide_bar} {pos}/{len} [{elapsed_precise}/{eta_precise}, {per_sec}]",
+    )
+    .unwrap();
+    for itr in (1..(config.itrs + 1)).progress_with_style(style) {
         // Must use config.itrs + 1 instead of =config.itrs due to indicatif not supporting
         // =config.itrs.
 
