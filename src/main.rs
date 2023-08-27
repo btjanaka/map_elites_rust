@@ -12,6 +12,7 @@ use rand::SeedableRng;
 use rand_pcg::Pcg64Mcg;
 use std::fs::File;
 use std::io::BufWriter;
+use std::io::Write;
 use std::time::Instant;
 
 //
@@ -217,7 +218,22 @@ fn map_elites(config: &MapElitesConfig) {
 fn main() {
     let cli = Cli::parse();
 
-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+    // Initialize logger.
+    env_logger::Builder::from_env(Env::default().default_filter_or("info"))
+        .format(|buf, record| {
+            let ts = buf.timestamp_millis();
+            let level = buf.default_styled_level(record.level());
+            writeln!(
+                buf,
+                "[{} {} {}:{}] {}",
+                ts,
+                level,
+                record.file().unwrap(),
+                record.line().unwrap(),
+                record.args()
+            )
+        })
+        .init();
 
     match &cli.command {
         Commands::Sphere { dim } => {
