@@ -1,5 +1,7 @@
 use clap::{Args, Parser, Subcommand};
+use env_logger::Env;
 use indicatif::{ProgressIterator, ProgressStyle};
+use log::info;
 use map_elites_rust::{benchmarks, utils};
 use ndarray::prelude::*;
 use ndarray_npy::WriteNpyExt;
@@ -119,7 +121,7 @@ fn map_elites(config: &MapElitesConfig) {
         config.grid_max - config.grid_min,
     ];
 
-    println!("Running MAP-Elites");
+    info!("Running MAP-Elites");
     let start_time = Instant::now();
 
     // MAP-Elites iterations.
@@ -195,13 +197,13 @@ fn map_elites(config: &MapElitesConfig) {
     // Metrics.
     let elapsed_time = start_time.elapsed();
     let num_cells = config.cells * config.cells;
-    println!(
+    info!(
         "Coverage: {:.3}",
         occupied_list.len() as f64 / num_cells as f64
     );
-    println!("Elapsed time: {:.3}s", elapsed_time.as_secs_f64());
+    info!("Elapsed time: {:.3}s", elapsed_time.as_secs_f64());
 
-    println!("Writing results!");
+    info!("Writing results!");
     let obj_writer = BufWriter::new(File::create("objectives.npy").unwrap());
     objective_arr.write_npy(obj_writer).unwrap();
     let meas_writer = BufWriter::new(File::create("measures.npy").unwrap());
@@ -214,6 +216,8 @@ fn map_elites(config: &MapElitesConfig) {
 
 fn main() {
     let cli = Cli::parse();
+
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
 
     match &cli.command {
         Commands::Sphere { dim } => {
