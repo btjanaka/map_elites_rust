@@ -13,6 +13,6 @@ cargo run map-elites
 Python:
 
 ```bash
-pip install ribs[all]
+pip install ribs[visualize]
 python scripts/plot_archive.py
 ```
