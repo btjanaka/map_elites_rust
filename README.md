@@ -1,6 +1,6 @@
 # MAP-Elites Rust
 
-The future is not yet set.
+Implementation of basic MAP-Elites with Gaussian mutations in Rust.
 
 ## Instructions
 
