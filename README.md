@@ -4,13 +4,13 @@ Implementation of basic MAP-Elites with Gaussian mutations in Rust.
 
 ## Instructions
 
-Rust:
+Run the algorithm with Rust:
 
 ```bash
 cargo run map-elites
 ```
 
-Python:
+Visualize results in Python:
 
 ```bash
 pip install ribs[visualize]
